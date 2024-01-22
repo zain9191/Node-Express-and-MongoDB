@@ -7,6 +7,7 @@ const app = express(); // Initialize express app
 
 
 const stufRoutes = require("./routes/stuff")
+const userRoutes = require("./routes/user")
 
 
 // Connect to MongoDB
@@ -36,7 +37,7 @@ mongoose.connect('mongodb+srv://zain:zain315216@firstcluster.bn3sbzb.mongodb.net
 app.use(bodyParser.json())
 
 app.use("/api/stuff",stufRoutes);
-
+app.use("/api/auth", userRoutes);
 
 // Export the Express app
 module.exports = app;
