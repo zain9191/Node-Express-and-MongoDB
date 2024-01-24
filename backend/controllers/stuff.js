@@ -21,7 +21,6 @@ const Thing = require ("../models/Thing")
 
 
 
-
   exports.modifyThing = (req, res, next) => {
     const thingObject = req.file ? {
         ...JSON.parse(req.body.thing),
@@ -44,6 +43,8 @@ const Thing = require ("../models/Thing")
         });
  };
 
+ 
+
   exports.deleteThing =  (req, res, next) => {
     Thing.deleteOne({_id: req.params._id})
         .then(() => res.status(200).json({message: "L'objet est bien supprimé"})) 
@@ -57,8 +58,18 @@ const Thing = require ("../models/Thing")
     .catch(error => res.status(400).json({error}))
   };
 
+
+
+
   exports.getAllThings = (req, res, next) => {
-  Thing.find()
-    .then(things => res.status(200).json(things))
-    .catch(error => res.status(400).json({ error}));
-} 
+    // Check if the request is authenticated
+    if (!req.auth || !req.auth.userId) {
+      return res.status(401).json({ message: 'Unauthorized access!!!!' });
+    }
+  
+    // Now you can proceed to fetch and return the list of things
+    Thing.find()
+      .then(things => res.status(200).json(things))
+      .catch(error => res.status(400).json({ error }));
+  };
+  
